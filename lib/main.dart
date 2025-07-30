@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (WebViewPlatform.instance is AndroidWebViewPlatform) {
     AndroidWebViewPlatform.registerWith();
-  } else if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-    WebKitWebViewPlatform.registerWith();
   }
 
   runApp(const MyApp());
@@ -21,12 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'MockNote',
+      theme: ThemeData(primarySwatch: Colors.blue),
       // 여기에 URL을 전달합니다. 이 URL을 변경하고 핫 리로드하면 웹뷰가 업데이트됩니다.
-      home: const MyHomePage(title: 'Mocknote Webview', url: 'http://mocknote.com'),
+      home: const MyHomePage(
+        title: 'Mocknote Webview',
+        url: 'http://mocknote.com',
+      ),
     );
   }
 }
@@ -51,6 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setUserAgent(
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+      )
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
@@ -96,14 +97,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: Stack(
         children: [
           WebViewWidget(controller: _controller),
-          if (_isLoading)
-            const Center(child: CircularProgressIndicator()),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );
