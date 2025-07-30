@@ -4,8 +4,8 @@
         android:label="mocknote_flutter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
+        android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true">
-        android:hardwareAccelerated="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
